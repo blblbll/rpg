@@ -28,11 +28,13 @@ inventaire_t *init_inv(void)
     inventaire_t *inv = malloc(sizeof(inventaire_t));
     inv->hand = 0;
 
-    inv->list_item = malloc(sizeof(item_t) * 4);
+    inv->list_item = malloc(sizeof(item_t *) * INV_SIZE);
     inv->list_item[0] = create_item_empty("1");
     inv->list_item[1] = create_item_empty("2");
     inv->list_item[2] = create_item_empty("3");
     inv->list_item[3] = create_item_empty("4");
+    inv->list_item[4] = create_item_empty("5");
+    inv->list_item[5] = create_item_empty("6");
     sfRectangleShape_setOutlineColor(inv->list_item[0]->square, sfRed);
     return inv;
 }

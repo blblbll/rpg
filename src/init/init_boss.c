@@ -14,7 +14,7 @@ int init_boss(rpg_t *rpg)
 
     if (!texture)
         return 1;
-    rpg->boss->vie = 250;
+    rpg->boss->vie = 100;
     rpg->boss->attack = 0;
     rpg->boss->status = 1;
     rpg->boss->boss = sfSprite_create();

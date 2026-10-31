@@ -19,6 +19,17 @@
 #ifndef RPG_H_
     #define RPG_H_
 
+// Sprite sheet of the pnj (assets/perso/PNJ.png): size of a frame, x of the
+// first frame of the chosen character, distance between two frames and y of
+// each row (front, left, right).
+#define PNJ_LEFT 232
+#define PNJ_STEP 78
+#define PNJ_W 56
+#define PNJ_H 91
+#define PNJ_ROW_FRONT 0
+#define PNJ_ROW_LEFT 108
+#define PNJ_ROW_RIGHT 216
+
 typedef struct item_s {
     int empty;
     char *name;
@@ -138,6 +149,9 @@ typedef struct player_s {
     sfSprite *key;
     sfSprite *xp;
     sfSprite *life_potion;
+    sfSprite *power_potion;
+    sfSprite *apple;
+    sfSprite *gem;
     sfIntRect life_rect;
     sfIntRect player_rect;
     sfIntRect xp_rect;
@@ -203,8 +217,11 @@ void bouton_optiontwo(rpg_t *rpg, sfVector2f edd, sfVector2i mouse);
 void bouton_resume(rpg_t *rpg, sfVector2f edd, sfVector2i mouse);
 inventaire_t *init_inv(void);
 void select_slot(rpg_t *rpg, int indice);
+void use_item(rpg_t *rpg);
 void display_slot(rpg_t *rpg, sfVector2f edd);
 void set_status_vilain(rpg_t *rpg);
+void flash_red(sfSprite *sprite);
+void clear_flash(rpg_t *rpg);
 
 // Main page
 void main_page(rpg_t *rpg);
@@ -228,6 +245,7 @@ void event(rpg_t *rpg);
 int attack_val(int nb);
 void deplace_map(rpg_t *rpg);
 void player_attack(rpg_t *rpg);
+int in_dialog(rpg_t *rpg);
 
 // Game
 void game(rpg_t *rpg);
@@ -251,6 +269,8 @@ void box_dialog(rpg_t *rpg, int len);
 void vilain_detection(rpg_t *rpg);
 int vilain_attack(rpg_t *rpg, sfSprite *vilain, int status);
 int player_attack_vilain(rpg_t *rpg);
+int hit_sprite(rpg_t *rpg, sfSprite *sprite);
+void hit_vilains(rpg_t *rpg, int mode);
 void which_mob2(rpg_t *rpg);
 void set_color_no_weapon(rpg_t *rpg);
 void set_color_weapon(rpg_t *rpg);
@@ -286,12 +306,53 @@ void movement_right(rpg_t *rpg);
 void move_rect(sfIntRect *rect, int offset, int max_value);
 void chrono_player(rpg_t *rpg, sfClock *clock, float secc, int max);
 int touch_bordure(rpg_t *rpg);
+int blocked_move(rpg_t *rpg, int dx, int dy);
+void update_keys(rpg_t *rpg);
+int key_just_pressed(sfKeyCode key);
+int touch_player(rpg_t *rpg, sfSprite *sprite, float margin);
+void key_consume(sfKeyCode key);
+int player_damage(rpg_t *rpg, int mode);
+int damage_for(int attack, int mode);
+#define INV_SIZE 6
+#define MENU_CONTINUE 1
+#define MENU_START 2
+#define MENU_OPTION 3
+#define MENU_CREDIT 4
+#define MENU_QUIT 5
+#define MENU_RESUME 11
+#define MENU_OPTION2 12
+#define MENU_CHARACTER 13
+#define MENU_MENU 14
+#define MENU_SOUND 21
+#define MENU_RES1 22
+#define MENU_RES2 23
+void menu_begin(rpg_t *rpg, const int *ids, int n);
+int menu_item(rpg_t *rpg, sfVector2i mouse, int id);
+int menu_edge(sfKeyCode key);
+int menu_selected(int id);
+int menu_moved(void);
+void menu_select(int id);
+void level_up(rpg_t *rpg);
+void reset_level(void);
+void reset_second_chest(void);
+void reset_third_chest(void);
+void reset_four_chest(void);
+void reset_fith_chest(void);
+void reset_six_chest(void);
+void set_stat(rpg_t *rpg);
+void reset_world(rpg_t *rpg);
+int attack_val(int nb);
+void fit_sprite(sfSprite *sprite, sfVector2f center, float size);
+int has_free_slot(rpg_t *rpg);
+void give_item(rpg_t *rpg, char *name, char *desc, sfSprite *sprite);
+void draw_level_up(rpg_t *rpg);
 
 // Attack
 void attack_id_no_w(rpg_t *rpg);
-void attack_no_weapon(rpg_t *rpg);
+void attack_no_weapon(rpg_t *rpg, int fire);
 void attack_id(rpg_t *rpg);
-void attack_with_weapon(rpg_t *rpg);
+void attack_with_weapon(rpg_t *rpg, int fire);
+int attack_step_ready(int reset);
 
 // Destroy
 void all_destroy(rpg_t *rpg);

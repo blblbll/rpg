@@ -9,26 +9,7 @@
 
 void which_mob(rpg_t *rpg)
 {
-    if (player_attack_vilain(rpg) == 1 && rpg->vilain->status1 != 0) {
-        rpg->vilain->attack1 = 1;
-        sfSprite_setColor(rpg->vilain->vilain1, sfWhite);
-    }
-    if (player_attack_vilain(rpg) == 2 && rpg->vilain->status2 != 0) {
-        rpg->vilain->attack2 = 1;
-        sfSprite_setColor(rpg->vilain->vilain2, sfWhite);
-    }
-    if (player_attack_vilain(rpg) == 3 && rpg->vilain->status3 != 0) {
-        rpg->vilain->attack3 = 1;
-        sfSprite_setColor(rpg->vilain->vilain3, sfWhite);
-    }
-    if (player_attack_vilain(rpg) == 4 && rpg->vilain->status4 != 0) {
-        rpg->vilain->attack4 = 1;
-        sfSprite_setColor(rpg->vilain->vilain4, sfWhite);
-    }
-    if (player_attack_vilain(rpg) == 5 && rpg->vilain->status5 != 0) {
-        rpg->vilain->attack5 = 1;
-        sfSprite_setColor(rpg->vilain->vilain5, sfWhite);
-    }
+    hit_vilains(rpg, 1);
 }
 
 void player_attack_two(rpg_t *rpg)
@@ -57,16 +38,14 @@ void attack_condition(rpg_t *rpg)
     sfVector2f pos2 = {rpg->player->player_pos.x, rpg->player->player_pos.y};
     rpg->player->player_rect.left = 0;
     sfSprite_setPosition(rpg->player->player, pos2);
+    attack_step_ready(1);
     attack_val(1);
 }
 
-void attack_no_weapon(rpg_t *rpg)
+void attack_no_weapon(rpg_t *rpg, int fire)
 {
-    if ((sfKeyboard_isKeyPressed(sfKeySpace)) && rpg->player->direction != 0) {
-        while (sfKeyboard_isKeyPressed(sfKeySpace));
-        if (attack_val(0) <= 0 || attack_val(0) >= 7) {
-            attack_condition(rpg);
-        }
+    if (fire && rpg->player->direction != 0 && attack_val(0) <= 0) {
+        attack_condition(rpg);
         if (player_attack_boss(rpg) == 1) {
             rpg->boss->attack = 1;
             sfSprite_setColor(rpg->boss->boss, sfWhite);

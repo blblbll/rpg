@@ -49,6 +49,7 @@ void player_attack_two_w(rpg_t *rpg)
     if (attack_val(0) >= 7) {
         attack_val(-1);
         attack_rect_position(rpg);
+        sfSprite_setPosition(rpg->player->player, rpg->player->player_pos);
     }
 }
 
@@ -73,16 +74,14 @@ void attack_condition_w(rpg_t *rpg)
         pos2.y -= 14;
     }
     sfSprite_setPosition(rpg->player->player, pos2);
+    attack_step_ready(1);
     attack_val(1);
 }
 
-void attack_with_weapon(rpg_t *rpg)
+void attack_with_weapon(rpg_t *rpg, int fire)
 {
-    if ((sfKeyboard_isKeyPressed(sfKeySpace)) && rpg->player->direction != 0) {
-        while (sfKeyboard_isKeyPressed(sfKeySpace));
-        if (attack_val(0) <= 0 || attack_val(0) >= 7) {
-            attack_condition_w(rpg);
-        }
+    if (fire && rpg->player->direction != 0 && attack_val(0) <= 0) {
+        attack_condition_w(rpg);
         if (player_attack_boss(rpg) == 1) {
             rpg->boss->attack = 2;
             sfSprite_setColor(rpg->boss->boss, sfWhite);

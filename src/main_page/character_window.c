@@ -34,6 +34,17 @@ void display_inv(rpg_t *rpg, sfVector2f edd)
         select_slot(rpg, 2);
     if (sfKeyboard_isKeyPressed(sfKeyNum4) == sfTrue)
         select_slot(rpg, 3);
+    if (sfKeyboard_isKeyPressed(sfKeyNum5) == sfTrue)
+        select_slot(rpg, 4);
+    if (sfKeyboard_isKeyPressed(sfKeyNum6) == sfTrue)
+        select_slot(rpg, 5);
+    if (key_just_pressed(sfKeyRight))
+        select_slot(rpg, (rpg->player->inv->hand + 1) % INV_SIZE);
+    if (key_just_pressed(sfKeyLeft))
+        select_slot(rpg, (rpg->player->inv->hand + INV_SIZE - 1) % INV_SIZE);
+    select_slot(rpg, rpg->player->inv->hand);
+    if (key_just_pressed(sfKeyE))
+        use_item(rpg);
     display_description(rpg, edd);
 }
 
@@ -95,8 +106,8 @@ void character_window(rpg_t *rpg)
     display_inv(rpg, edd);
     sfRenderWindow_display(rpg->windo->window);
     set_view(rpg, rpg->player->player_pos, 0);
-    if (sfKeyboard_isKeyPressed(sfKeyI) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyI) == sfTrue);
+    if (key_just_pressed(sfKeyI)) {
+        key_consume(sfKeyI);
         rpg->page = 1;
     }
     sfSprite_setPosition(rpg->player->player, (sfVector2f)

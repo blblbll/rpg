@@ -25,8 +25,8 @@ void vilain_mouvement(rpg_t *rpg, sfSprite *vilain)
         dy = sfSprite_getPosition(rpg->player->player).y -
         sfSprite_getPosition(vilain).y;
         angle = atan2(dy, dx);
-        vx = cos(angle) * 2;
-        vy = sin(angle) * 2;
+        vx = cos(angle) * 3;
+        vy = sin(angle) * 3;
         sfSprite_move(vilain, (sfVector2f){vx, vy});
     }
 }
@@ -44,14 +44,14 @@ sfVector2f pos2, sfSprite *vilain)
 
 void vilain_detection_bis(rpg_t *rpg)
 {
-    sfVector2f pos1 = {rpg->vilain->vilain4_pos.x - 300,
-    rpg->vilain->vilain4_pos.y - 300};
-    sfVector2f pos2 = {rpg->vilain->vilain4_pos.x + 300,
-    rpg->vilain->vilain4_pos.y + 300};
-    sfVector2f pos3 = {rpg->vilain->vilain5_pos.x - 300,
-    rpg->vilain->vilain5_pos.y - 300};
-    sfVector2f pos4 = {rpg->vilain->vilain5_pos.x + 300,
-    rpg->vilain->vilain5_pos.y + 300};
+    sfVector2f pos1 = {rpg->vilain->vilain4_pos.x - 600,
+    rpg->vilain->vilain4_pos.y - 600};
+    sfVector2f pos2 = {rpg->vilain->vilain4_pos.x + 600,
+    rpg->vilain->vilain4_pos.y + 600};
+    sfVector2f pos3 = {rpg->vilain->vilain5_pos.x - 600,
+    rpg->vilain->vilain5_pos.y - 600};
+    sfVector2f pos4 = {rpg->vilain->vilain5_pos.x + 600,
+    rpg->vilain->vilain5_pos.y + 600};
 
     vilain_zone(rpg, pos1, pos2, rpg->vilain->vilain4);
     vilain_zone(rpg, pos3, pos4, rpg->vilain->vilain5);
@@ -59,18 +59,18 @@ void vilain_detection_bis(rpg_t *rpg)
 
 void vilain_detection(rpg_t *rpg)
 {
-    sfVector2f pos1 = {rpg->vilain->vilain1_pos.x - 300,
-    rpg->vilain->vilain1_pos.y - 300};
-    sfVector2f pos2 = {rpg->vilain->vilain1_pos.x + 300,
-    rpg->vilain->vilain1_pos.y + 300};
-    sfVector2f pos3 = {rpg->vilain->vilain2_pos.x - 300,
-    rpg->vilain->vilain2_pos.y - 300};
-    sfVector2f pos4 = {rpg->vilain->vilain2_pos.x + 300,
-    rpg->vilain->vilain2_pos.y + 300};
-    sfVector2f pos5 = {rpg->vilain->vilain3_pos.x - 300,
-    rpg->vilain->vilain3_pos.y - 300};
-    sfVector2f pos6 = {rpg->vilain->vilain3_pos.x + 300,
-    rpg->vilain->vilain3_pos.y + 300};
+    sfVector2f pos1 = {rpg->vilain->vilain1_pos.x - 600,
+    rpg->vilain->vilain1_pos.y - 600};
+    sfVector2f pos2 = {rpg->vilain->vilain1_pos.x + 600,
+    rpg->vilain->vilain1_pos.y + 600};
+    sfVector2f pos3 = {rpg->vilain->vilain2_pos.x - 600,
+    rpg->vilain->vilain2_pos.y - 600};
+    sfVector2f pos4 = {rpg->vilain->vilain2_pos.x + 600,
+    rpg->vilain->vilain2_pos.y + 600};
+    sfVector2f pos5 = {rpg->vilain->vilain3_pos.x - 600,
+    rpg->vilain->vilain3_pos.y - 600};
+    sfVector2f pos6 = {rpg->vilain->vilain3_pos.x + 600,
+    rpg->vilain->vilain3_pos.y + 600};
 
     vilain_zone(rpg, pos1, pos2, rpg->vilain->vilain1);
     vilain_zone(rpg, pos3, pos4, rpg->vilain->vilain2);

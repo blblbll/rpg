@@ -7,9 +7,9 @@
 
 #include "rpg.h"
 
-void res_one(rpg_t *rpg,  sfText *res)
+void res_one(rpg_t *rpg, sfText *res, int pressed)
 {
-    if (sfMouse_isButtonPressed(sfMouseLeft)) {
+    if (pressed) {
         rpg->windo->video_mode.width = 1920;
         rpg->windo->video_mode.height = 1080;
         sfRenderWindow_setSize(rpg->windo->window, (sfVector2u){1920, 1080});
@@ -28,15 +28,20 @@ void first_res(rpg_t *rpg, sfText *res, sfVector2i mouse, sfVector2f edd)
     else
         sfText_setColor(res, sfWhite);
     sfFloatRect rect = sfText_getGlobalBounds(res);
-    if (sfFloatRect_contains(&rect, t_static(mouse.x, rpg),
-    t2_static(mouse.y, rpg)))
-        res_one(rpg, res);
+    int hov = sfFloatRect_contains(&rect, t_static(mouse.x, rpg),
+    t2_static(mouse.y, rpg));
+
+    if (hov && menu_moved())
+        menu_select(MENU_RES1);
+    if (hov || menu_selected(MENU_RES1))
+        res_one(rpg, res, (hov && sfMouse_isButtonPressed(sfMouseLeft)) ||
+        (menu_selected(MENU_RES1) && menu_edge(sfKeyReturn)));
     sfRenderWindow_drawText(rpg->windo->window, res, NULL);
 }
 
-void res_two(rpg_t *rpg, sfText *res)
+void res_two(rpg_t *rpg, sfText *res, int pressed)
 {
-    if (sfMouse_isButtonPressed(sfMouseLeft)) {
+    if (pressed) {
         rpg->windo->video_mode.width = 1600;
         rpg->windo->video_mode.height = 900;
         sfRenderWindow_setSize(rpg->windo->window, (sfVector2u){1600, 900});
@@ -55,9 +60,14 @@ void second_res(rpg_t *rpg, sfText *res, sfVector2i mouse, sfVector2f edd)
     else
         sfText_setColor(res, sfWhite);
     sfFloatRect rect = sfText_getGlobalBounds(res);
-    if (sfFloatRect_contains(&rect, t_static(mouse.x, rpg),
-    t2_static(mouse.y, rpg)))
-        res_two(rpg, res);
+    int hov = sfFloatRect_contains(&rect, t_static(mouse.x, rpg),
+    t2_static(mouse.y, rpg));
+
+    if (hov && menu_moved())
+        menu_select(MENU_RES2);
+    if (hov || menu_selected(MENU_RES2))
+        res_two(rpg, res, (hov && sfMouse_isButtonPressed(sfMouseLeft)) ||
+        (menu_selected(MENU_RES2) && menu_edge(sfKeyReturn)));
     sfRenderWindow_drawText(rpg->windo->window, res, NULL);
 }
 

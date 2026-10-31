@@ -9,38 +9,48 @@
 
 int player_attack_boss(rpg_t *rpg)
 {
-    int distance = sqrt(pow(sfSprite_getPosition(rpg->player->player).x -
-    sfSprite_getPosition(rpg->boss->boss).x, 2)
-    + pow(sfSprite_getPosition(rpg->player->player).y -
-    sfSprite_getPosition(rpg->boss->boss).y, 2));
-
-    if (rpg->player->weapon == 0) {
-        if (distance <= 100) {
-            return (1);
-        }
-    }
-    if (rpg->player->weapon == 1) {
-        if (distance <= 150) {
-            return (1);
-        }
-    }
-    return (0);
+    return (rpg->boss->status != 0 && hit_sprite(rpg, rpg->boss->boss));
 }
 
 void game_boss(rpg_t *rpg)
 {
     if (rpg->boss->attack == 1) {
-        rpg->boss->vie -= rpg->player->attack;
-        if (rpg->boss->vie % 2 == 0)
-            sfSprite_setColor(rpg->boss->boss, sfRed);
+        rpg->boss->vie -= player_damage(rpg, 1);
+        flash_red(rpg->boss->boss);
     }
     if (rpg->boss->attack == 2) {
-        if (rpg->boss->vie % 2 == 0)
-            sfSprite_setColor(rpg->boss->boss, sfRed);
-        rpg->boss->vie -= rpg->player->attack;
+        flash_red(rpg->boss->boss);
+        rpg->boss->vie -= player_damage(rpg, 2);
     }
     rpg->boss->attack = 0;
     if (rpg->boss->vie <= 0) {
         rpg->boss->status = 0;
     }
+}
+
+sfClock *flash_clock(void)
+{
+    static sfClock *clock = NULL;
+
+    if (clock == NULL)
+        clock = sfClock_create();
+    return (clock);
+}
+
+void flash_red(sfSprite *sprite)
+{
+    sfSprite_setColor(sprite, sfRed);
+    sfClock_restart(flash_clock());
+}
+
+void clear_flash(rpg_t *rpg)
+{
+    if (sfTime_asMilliseconds(sfClock_getElapsedTime(flash_clock())) < 150)
+        return;
+    sfSprite_setColor(rpg->boss->boss, sfWhite);
+    sfSprite_setColor(rpg->vilain->vilain1, sfWhite);
+    sfSprite_setColor(rpg->vilain->vilain2, sfWhite);
+    sfSprite_setColor(rpg->vilain->vilain3, sfWhite);
+    sfSprite_setColor(rpg->vilain->vilain4, sfWhite);
+    sfSprite_setColor(rpg->vilain->vilain5, sfWhite);
 }

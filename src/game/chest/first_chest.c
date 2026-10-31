@@ -11,20 +11,20 @@ void open_chest(rpg_t *rpg)
 {
     sfSprite_setPosition(rpg->player->interact, (sfVector2f){4160, 7120});
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->player->interact, NULL);
-    if (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue);
+    if (key_just_pressed(sfKeyE)) {
+        key_consume(sfKeyE);
         rpg->player->chest = 1;
     }
 }
 
 void add_sword_to_inv(rpg_t *rpg, sfSprite *sword)
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < INV_SIZE; i++) {
         if (rpg->player->inv->list_item[i]->empty == 1) {
             rpg->player->inv->list_item[i]->empty = 0;
             rpg->player->inv->list_item[i]->name = "Longue epee";
             rpg->player->inv->list_item[i]->description =
-            "Longue epee permettant de tuer le monstre squelette\nDegat: 2";
+            "Longue epee permettant de tuer\nles monstres plus vite.";
             sfSprite_scale(sword, (sfVector2f) {0.70, 0.70});
             rpg->player->inv->list_item[i]->sprite = sword;
             break;
@@ -36,8 +36,7 @@ void recup_sword(rpg_t *rpg)
 {
     sfSprite_setPosition(rpg->player->interact, (sfVector2f){4060, 7120});
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->player->interact, NULL);
-    if (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue);
+    if (key_just_pressed(sfKeyE) && has_free_slot(rpg)) {
         rpg->player->chest = 2;
         rpg->player->weapon = 1;
         rpg->player->attack += 1;

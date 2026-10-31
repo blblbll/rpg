@@ -38,8 +38,8 @@ void text_three(rpg_t *rpg)
 
 void pnj_interact(rpg_t *rpg)
 {
-    rpg->pnj_a->pnj_rect.left = 0;
-    rpg->pnj_a->pnj_rect.top = 636;
+    rpg->pnj_a->pnj_rect.left = PNJ_LEFT;
+    rpg->pnj_a->pnj_rect.top = PNJ_ROW_FRONT;
     if (rpg->pnj_a->interact == 0) {
         sfVector2f pos = {rpg->pnj_a->pnj_pos.x + 140, rpg->pnj_a->pnj_pos.y -
         30};

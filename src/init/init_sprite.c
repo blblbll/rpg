@@ -63,9 +63,17 @@ int font_floue(rpg_t *rpg)
 {
     rpg->font_floue = create_sprite("assets/map/Fonts_floue.jpg");
     rpg->player->life_potion = create_sprite("assets/sprite/life_potion.png");
+    rpg->player->power_potion = create_sprite("assets/sprite/life_potion.png");
 
-    if (!rpg->font_floue || !rpg->player->life_potion)
+    rpg->player->apple = create_sprite("assets/sprite/apple.png");
+    rpg->player->gem = create_sprite("assets/sprite/gem.png");
+    if (!rpg->font_floue || !rpg->player->life_potion ||
+    !rpg->player->power_potion || !rpg->player->apple || !rpg->player->gem)
         return 1;
+    sfSprite_setScale(rpg->player->apple, (sfVector2f){0.8, 0.8});
+    sfSprite_setScale(rpg->player->gem, (sfVector2f){0.8, 0.8});
+    sfSprite_setColor(rpg->player->power_potion, sfColor_fromRGB(255, 150, 0));
+    sfSprite_setScale(rpg->player->power_potion, (sfVector2f){0.1, 0.1});
     rpg->effect->door_open = 0;
     rpg->player->potion_have = 0;
     return 0;

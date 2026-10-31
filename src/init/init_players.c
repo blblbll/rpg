@@ -26,13 +26,14 @@ int init_sword(rpg_t *rpg)
 
 int ini_pnj(rpg_t *rpg)
 {
-    rpg->pnj_a->pnj = create_sprite("assets/perso/pnj.png");
+    rpg->pnj_a->pnj = create_sprite("assets/perso/PNJ.png");
 
     if (!rpg->pnj_a->pnj)
         return 1;
-    rpg->pnj_a->pnj_rect = create_rect(0, 700, 64 , 64);
+    rpg->pnj_a->pnj_rect = create_rect(PNJ_ROW_FRONT, PNJ_LEFT, PNJ_W,
+    PNJ_H);
     rpg->pnj_a->pnj_pos = (sfVector2f) {1720, 6150};
-    sfSprite_setScale(rpg->pnj_a->pnj, (sfVector2f) {3.2, 3.2});
+    sfSprite_setScale(rpg->pnj_a->pnj, (sfVector2f) {2.25, 2.25});
     sfSprite_setPosition(rpg->pnj_a->pnj, rpg->pnj_a->pnj_pos);
     sfSprite_setTextureRect(rpg->pnj_a->pnj, rpg->pnj_a->pnj_rect);
     rpg->pnj_a->clock_pnj = sfClock_create();
@@ -66,7 +67,7 @@ int init_player(rpg_t *rpg)
     rpg->player->life = create_sprite("assets/sprite/life.png");
     if (!texture || !rpg->player->life)
         return 1;
-    rpg->player->vitesse = 30;
+    rpg->player->vitesse = 10;
     rpg->player->attack_id = 0;
     rpg->player->attack = 1;
     rpg->player->player = sfSprite_create();

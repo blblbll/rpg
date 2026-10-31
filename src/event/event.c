@@ -7,6 +7,37 @@
 
 #include "rpg.h"
 
+static int just_pressed[sfKeyCount];
+
+void update_keys(rpg_t *rpg)
+{
+    static int last[sfKeyCount];
+    sfKeyCode keys[5] = {sfKeyE, sfKeyP, sfKeyI, sfKeyLeft, sfKeyRight};
+    int now = 0;
+
+    for (int i = 0; i < 5; i++) {
+        now = sfKeyboard_isKeyPressed(keys[i]) &&
+        sfRenderWindow_hasFocus(rpg->windo->window);
+        just_pressed[keys[i]] = now && !last[keys[i]];
+        last[keys[i]] = now;
+    }
+}
+
+int key_just_pressed(sfKeyCode key)
+{
+    return (just_pressed[key]);
+}
+
+void key_consume(sfKeyCode key)
+{
+    just_pressed[key] = 0;
+}
+
+int in_dialog(rpg_t *rpg)
+{
+    return (rpg->dialog_pass < 4 || rpg->pnj_a->interact == 1);
+}
+
 void dev_fonction_event(rpg_t *rpg)
 {
     if (sfKeyboard_isKeyPressed(sfKeyA) == sfTrue && rpg->zoom < 1.35 &&
@@ -42,15 +73,17 @@ void echap_key(rpg_t *rpg)
 
 void event(rpg_t *rpg)
 {
+    update_keys(rpg);
     while (sfRenderWindow_pollEvent(rpg->windo->window, &rpg->windo->event)) {
         if (rpg->windo->event.type == sfEvtClosed)
             sfRenderWindow_close(rpg->windo->window);
         resize(rpg);
-        if (rpg->page == 1 && attack_val(0) <= 0)
-            all_mouv(rpg);
         echap_key(rpg);
-        deplace_map(rpg);
     }
+    if (rpg->page == 1 && !in_dialog(rpg) && attack_val(0) <= 0)
+        all_mouv(rpg);
+    if (rpg->page == 1)
+        deplace_map(rpg);
     player_attack(rpg);
     dev_fonction_event(rpg);
     game_boss(rpg);

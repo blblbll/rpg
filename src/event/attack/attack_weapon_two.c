@@ -36,10 +36,25 @@ void chrono_player_attack(rpg_t *rpg, sfClock *clock, float secc, int max)
 
 void attack_id(rpg_t *rpg)
 {
-    if (rpg->player->attack_id == 1) {
-        sfSleep((sfTime){75000});
+    if (rpg->player->attack_id == 1 && attack_step_ready(0)) {
         chrono_player_attack(rpg, rpg->windo->clock, 10000.0, 760);
         attack_val(attack_val(0) + 1);
     }
     rpg->player->attack_id = 0;
+}
+
+int attack_step_ready(int reset)
+{
+    static sfClock *clock = NULL;
+
+    if (clock == NULL)
+        clock = sfClock_create();
+    if (reset) {
+        sfClock_restart(clock);
+        return (0);
+    }
+    if (sfTime_asMilliseconds(sfClock_getElapsedTime(clock)) < 75)
+        return (0);
+    sfClock_restart(clock);
+    return (1);
 }

@@ -11,7 +11,7 @@ void credit_window(rpg_t *rpg)
 {
     sfVector2f edd = sfView_getCenter(rpg->windo->view);
     char *str = "Credits: \n- Marcq Julien\n- Rogez Jules\n- Wozniak Thomas\n\
-- Isore Gabriel\n";
+- Isore Hortense\n";
 
     sfText_setString(rpg->player->text, str);
     sfText_setColor(rpg->player->text, sfColor_fromRGB(245, 245, 245));

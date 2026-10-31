@@ -38,36 +38,46 @@ void chrono_player(rpg_t *rpg, sfClock *clock, float secc, int max)
     }
 }
 
-int touch_bordure_two(rpg_t *rpg, sfColor col)
+int is_wall(rpg_t *rpg, int x, int y)
 {
-    for (int i = 20;  i < 190; i++) {
-        col = sfImage_getPixel(rpg->image_font, rpg->player->player_pos.x + 50,
-        rpg->player->player_pos.y + i);
-        if (col.r == 255 && col.g == 255 && col.b == 255)
-            return (1);
-        col = sfImage_getPixel(rpg->image_font, rpg->player->player_pos.x +
-        140, rpg->player->player_pos.y + i);
-        if (col.r == 255 && col.g == 255 && col.b == 255)
+    sfVector2u size = sfImage_getSize(rpg->image_font);
+    sfColor col;
+
+    if (x < 0 || y < 0 || x >= (int) size.x || y >= (int) size.y)
+        return (1);
+    col = sfImage_getPixel(rpg->image_font, x, y);
+    return (col.r == 255 && col.g == 255 && col.b == 255);
+}
+
+int touch_bordure_two(rpg_t *rpg, sfVector2f pos)
+{
+    for (int i = 20; i < 190; i++) {
+        if (is_wall(rpg, pos.x + 50, pos.y + i) ||
+        is_wall(rpg, pos.x + 140, pos.y + i))
             return (1);
     }
     return (0);
 }
 
-int touch_bordure(rpg_t *rpg)
+int touch_bordure_at(rpg_t *rpg, sfVector2f pos)
 {
-    sfColor col = sfImage_getPixel(rpg->image_font, rpg->player->player_pos.x
-    + 50, rpg->player->player_pos.y + 20);
-    for (int i = 50;  i < 140; i++) {
-        col = sfImage_getPixel(rpg->image_font, rpg->player->player_pos.x + i,
-        rpg->player->player_pos.y + 20);
-        if (col.r == 255 && col.g == 255 && col.b == 255)
-            return (1);
-        col = sfImage_getPixel(rpg->image_font, rpg->player->player_pos.x + i,
-        rpg->player->player_pos.y + 190);
-        if (col.r == 255 && col.g == 255 && col.b == 255)
+    for (int i = 50; i < 140; i++) {
+        if (is_wall(rpg, pos.x + i, pos.y + 20) ||
+        is_wall(rpg, pos.x + i, pos.y + 190))
             return (1);
     }
-    if (touch_bordure_two(rpg, col) == 1)
-        return (1);
-    return (0);
+    return (touch_bordure_two(rpg, pos));
+}
+
+int touch_bordure(rpg_t *rpg)
+{
+    return (touch_bordure_at(rpg, rpg->player->player_pos));
+}
+
+int blocked_move(rpg_t *rpg, int dx, int dy)
+{
+    sfVector2f pos = rpg->player->player_pos;
+    sfVector2f next = {pos.x + dx, pos.y + dy};
+
+    return (touch_bordure_at(rpg, next) && !touch_bordure_at(rpg, pos));
 }

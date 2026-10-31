@@ -13,12 +13,8 @@ void movement_left(rpg_t *rpg)
     rpg->player->player_pos.x >= 3700 && rpg->player->player_pos.y <= 1590 &&
     rpg->player->player_pos.y >= 1100)
         return;
-    touch_bordure(rpg) == 1 ? rpg->player->player_pos.x =
-    rpg->player->player_pos.x - rpg->player->vitesse : 0;
-    if (touch_bordure(rpg) == 1) {
-        rpg->player->player_pos.x += rpg->player->vitesse;
+    if (blocked_move(rpg, -rpg->player->vitesse, 0))
         return;
-    }
     rpg->player->player_pos.x -= rpg->player->vitesse;
     rpg->player->player_rect.top = 590;
     if (rpg->player->weapon == 1 && rpg->player->sword1 == 0) {
@@ -26,7 +22,7 @@ void movement_left(rpg_t *rpg)
         rpg->player->sword1 = 1;
     }
     sfSprite_setPosition(rpg->player->player, rpg->player->player_pos);
-    chrono_player(rpg, rpg->windo->clock, 400000.0, 550);
+    chrono_player(rpg, rpg->windo->clock, 180000.0, 550);
     rpg->player->direction = 4;
     rpg->player->sword2 = 0;
 }
@@ -37,12 +33,8 @@ void movement_right(rpg_t *rpg)
     rpg->player->player_pos.x <= 1350 && rpg->player->player_pos.y <= 1590 &&
     rpg->player->player_pos.y >= 1100)
         return;
-    touch_bordure(rpg) == 1 ? rpg->player->player_pos.x =
-    rpg->player->player_pos.x + rpg->player->vitesse : 0;
-    if (touch_bordure(rpg) == 1) {
-        rpg->player->player_pos.x -= rpg->player->vitesse;
+    if (blocked_move(rpg, rpg->player->vitesse, 0))
         return;
-    }
     rpg->player->player_pos.x += rpg->player->vitesse;
     rpg->player->player_rect.top = 717;
     if (rpg->player->weapon == 1 && rpg->player->sword2 == 0) {
@@ -50,24 +42,19 @@ void movement_right(rpg_t *rpg)
         rpg->player->sword2 = 1;
     }
     sfSprite_setPosition(rpg->player->player, rpg->player->player_pos);
-    chrono_player(rpg, rpg->windo->clock, 400000.0, 560);
+    chrono_player(rpg, rpg->windo->clock, 180000.0, 560);
     rpg->player->direction = 2;
     rpg->player->sword1 = 0;
 }
 
 void movement_down(rpg_t *rpg)
 {
-    touch_bordure(rpg) == 1 ? rpg->player->player_pos.y =
-    rpg->player->player_pos.y + rpg->player->vitesse :
-    0;
-    if (touch_bordure(rpg) == 1) {
-        rpg->player->player_pos.y -= rpg->player->vitesse;
+    if (blocked_move(rpg, 0, rpg->player->vitesse))
         return;
-    }
     rpg->player->player_pos.y += rpg->player->vitesse;
     rpg->player->player_rect.top = 650;
     sfSprite_setPosition(rpg->player->player, rpg->player->player_pos);
-    chrono_player(rpg, rpg->windo->clock, 400000.0, 550);
+    chrono_player(rpg, rpg->windo->clock, 180000.0, 550);
     rpg->player->direction = 3;
     rpg->player->sword1 = 0;
     rpg->player->sword2 = 0;
@@ -78,17 +65,12 @@ void movement_up(rpg_t *rpg)
     if (rpg->effect->door_open == 0 && rpg->player->player_pos.x >= 2460 &&
     rpg->player->player_pos.x <= 2840 && rpg->player->player_pos.y <= 3270)
         return;
-    touch_bordure(rpg) == 1 ? rpg->player->player_pos.y =
-    rpg->player->player_pos.y - rpg->player->vitesse :
-    0;
-    if (touch_bordure(rpg) == 1) {
-        rpg->player->player_pos.y += rpg->player->vitesse;
+    if (blocked_move(rpg, 0, -rpg->player->vitesse))
         return;
-    }
     rpg->player->player_pos.y -= rpg->player->vitesse;
     rpg->player->player_rect.top = 520;
     sfSprite_setPosition(rpg->player->player, rpg->player->player_pos);
-    chrono_player(rpg, rpg->windo->clock, 400000.0, 560);
+    chrono_player(rpg, rpg->windo->clock, 180000.0, 560);
     rpg->player->direction = 1;
     rpg->player->sword1 = 0;
     rpg->player->sword2 = 0;

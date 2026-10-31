@@ -39,6 +39,15 @@ void set_pos_circle(rpg_t *rpg, sfVector2f edd)
         rpg->sound->pos_vol = t_static(mouse.x, rpg);
         rpg->sound->pos_vol_two = 1;
     }
+    if (menu_selected(MENU_SOUND)) {
+        rpg->sound->pos_vol += sfKeyboard_isKeyPressed(sfKeyRight) * 4;
+        rpg->sound->pos_vol -= sfKeyboard_isKeyPressed(sfKeyLeft) * 4;
+        if (sfKeyboard_isKeyPressed(sfKeyRight) ||
+        sfKeyboard_isKeyPressed(sfKeyLeft))
+            rpg->sound->pos_vol_two = 1;
+        rpg->sound->pos_vol = fmax(edd.x - 240, fmin(edd.x + 47,
+        rpg->sound->pos_vol));
+    }
     rpg->sound->volume = (rpg->sound->pos_vol - edd.x) * 100 / 297 + 83;
     rpg->sound->pos_circle = (sfVector2f){edd.x - 250 +
     ((rpg->sound->volume * 297) / 100), edd.y - 110};
@@ -64,6 +73,9 @@ void slicer(rpg_t *rpg)
 
 void option_window(rpg_t *rpg)
 {
+    int ids[3] = {MENU_SOUND, MENU_RES1, MENU_RES2};
+
+    menu_begin(rpg, ids, 3);
     sfRenderWindow_clear(rpg->windo->window, sfColor_fromRGB(41, 45, 54));
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->font_floue, NULL);
     display_level_sound(rpg);

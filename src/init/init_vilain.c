@@ -9,11 +9,11 @@
 
 void set_stat(rpg_t *rpg)
 {
-    rpg->vilain->vie1 = 25;
-    rpg->vilain->vie2 = 25;
-    rpg->vilain->vie3 = 25;
-    rpg->vilain->vie4 = 55;
-    rpg->vilain->vie5 = 55;
+    rpg->vilain->vie1 = 12;
+    rpg->vilain->vie2 = 12;
+    rpg->vilain->vie3 = 12;
+    rpg->vilain->vie4 = 25;
+    rpg->vilain->vie5 = 25;
     rpg->vilain->attack1 = 0;
     rpg->vilain->attack2 = 0;
     rpg->vilain->attack3 = 0;

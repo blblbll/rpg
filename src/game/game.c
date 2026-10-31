@@ -47,11 +47,12 @@ void lose_page(rpg_t *rpg)
 
 void game_second(rpg_t *rpg, int len)
 {
-    if (sfKeyboard_isKeyPressed(sfKeyI) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyI) == sfTrue);
+    if (key_just_pressed(sfKeyI)) {
+        key_consume(sfKeyI);
         rpg->page = 4;
     }
     display_life(rpg);
+    draw_level_up(rpg);
     box_dialog(rpg, len);
     if (rpg->player->vie == 0)
         rpg->page = 5;

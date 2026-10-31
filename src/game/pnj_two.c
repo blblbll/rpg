@@ -13,8 +13,7 @@ void box_dialogg(rpg_t *rpg)
     sfSprite_setPosition(rpg->dialog, (sfVector2f){edd.x - 900, edd.y - 400});
     sfText_setPosition(rpg->text_dialog, (sfVector2f){edd.x - 600, edd.y +
     250});
-    if (sfKeyboard_isKeyPressed(sfKeyP) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyP) == sfTrue);
+    if (key_just_pressed(sfKeyP)) {
         rpg->pnj_a->pnj__dialog++;
     }
     if (rpg->pnj_a->pnj__dialog == 0)
@@ -31,13 +30,11 @@ void box_dialogg(rpg_t *rpg)
     }
 }
 
-void move_rect_pnj(int offset, int max_value, rpg_t *rpg, int d)
+void move_rect_pnj(rpg_t *rpg)
 {
-    rpg->pnj_a->pnj_rect.left = rpg->pnj_a->pnj_rect.left + offset;
-    if (rpg->pnj_a->pnj_rect.left >= max_value) {
-        rpg->pnj_a->pnj_rect.left = 61;
-        rpg->pnj_a->pnj_pos.x += d;
-    }
+    rpg->pnj_a->pnj_rect.left += PNJ_STEP;
+    if (rpg->pnj_a->pnj_rect.left >= PNJ_LEFT + 3 * PNJ_STEP)
+        rpg->pnj_a->pnj_rect.left = PNJ_LEFT;
 }
 
 void stop_pnj(rpg_t *rpg, int speed)
@@ -46,29 +43,29 @@ void stop_pnj(rpg_t *rpg, int speed)
         rpg->pnj_a->pnj_pos.x -= speed * 2;
         rpg->pnj_a->mouv_deux = 0;
         rpg->pnj_a->mouv_un = 40;
-        rpg->pnj_a->pnj_rect.left = 0;
-        rpg->pnj_a->pnj_rect.top = 636;
+        rpg->pnj_a->pnj_rect.left = PNJ_LEFT;
+        rpg->pnj_a->pnj_rect.top = PNJ_ROW_FRONT;
     }
     if (rpg->pnj_a->pnj_pos.x <= 1650) {
         rpg->pnj_a->pnj_pos.x += speed * 2;
         rpg->pnj_a->mouv_deux = 1;
         rpg->pnj_a->mouv_un = 40;
-        rpg->pnj_a->pnj_rect.left = 0;
-        rpg->pnj_a->pnj_rect.top = 636;
+        rpg->pnj_a->pnj_rect.left = PNJ_LEFT;
+        rpg->pnj_a->pnj_rect.top = PNJ_ROW_FRONT;
     }
 }
 
-void chrono_pnj_two(rpg_t *rpg, int speed, int max)
+void chrono_pnj_two(rpg_t *rpg, int speed)
 {
     if (rpg->pnj_a->mouv_deux == 0) {
-        rpg->pnj_a->pnj_rect.top = 574;
+        rpg->pnj_a->pnj_rect.top = PNJ_ROW_LEFT;
         rpg->pnj_a->pnj_pos.x -= speed;
-        move_rect_pnj(65, 440, rpg, -6);
+        move_rect_pnj(rpg);
     }
     if (rpg->pnj_a->mouv_deux == 1) {
-        rpg->pnj_a->pnj_rect.top = 699;
+        rpg->pnj_a->pnj_rect.top = PNJ_ROW_RIGHT;
         rpg->pnj_a->pnj_pos.x += speed;
-        move_rect_pnj(63, max, rpg, 15);
+        move_rect_pnj(rpg);
     }
     stop_pnj(rpg, speed);
 }
@@ -84,7 +81,7 @@ void chrono_pnj(rpg_t *rpg, sfClock *clock, float secc, int max)
     sec = time.microseconds / secc;
     if (sec > 0.55) {
         if (rpg->pnj_a->mouv_un == 0)
-            chrono_pnj_two(rpg, speed, max);
+            chrono_pnj_two(rpg, speed);
         if (rpg->pnj_a->mouv_un != 0)
             rpg->pnj_a->mouv_un--;
         sfClock_restart(clock);

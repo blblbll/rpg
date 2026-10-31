@@ -25,18 +25,18 @@ void boss_mouvement(rpg_t *rpg)
         dy = sfSprite_getPosition(rpg->player->player).y -
         sfSprite_getPosition(rpg->boss->boss).y;
         angle = atan2(dy, dx);
-        vx = cos(angle) * 1;
-        vy = sin(angle) * 1;
+        vx = cos(angle) * 2;
+        vy = sin(angle) * 2;
         sfSprite_move(rpg->boss->boss, (sfVector2f){vx, vy});
     }
 }
 
 void boss_detection(rpg_t *rpg)
 {
-    sfVector2f pos1 = {rpg->boss->boss_pos.x - 500,
-    rpg->boss->boss_pos.y - 500};
-    sfVector2f pos2 = {rpg->boss->boss_pos.x + 500,
-    rpg->boss->boss_pos.y + 500};
+    sfVector2f pos1 = {rpg->boss->boss_pos.x - 900,
+    rpg->boss->boss_pos.y - 900};
+    sfVector2f pos2 = {rpg->boss->boss_pos.x + 900,
+    rpg->boss->boss_pos.y + 900};
 
     if (rpg->player->player_pos.x >= pos1.x &&
     rpg->player->player_pos.x <= pos2.x &&

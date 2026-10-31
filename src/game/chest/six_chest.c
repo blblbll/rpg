@@ -11,8 +11,8 @@ int open_six_chest(rpg_t *rpg, int m)
 {
     sfSprite_setPosition(rpg->player->interact, (sfVector2f){140, 1300});
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->player->interact, NULL);
-    if (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue);
+    if (key_just_pressed(sfKeyE)) {
+        key_consume(sfKeyE);
         m = 1;
     }
     return (m);
@@ -20,13 +20,13 @@ int open_six_chest(rpg_t *rpg, int m)
 
 void add_potion_inv(rpg_t *rpg)
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < INV_SIZE; i++) {
         if (rpg->player->inv->list_item[i]->empty == 1) {
             rpg->player->inv->list_item[i]->empty = 0;
             rpg->player->inv->list_item[i]->sprite = rpg->player->life_potion;
             rpg->player->inv->list_item[i]->name = "Life potion";
             rpg->player->inv->list_item[i]->description =
-            "Heal the character life's bar.";
+            "Rend toute la vie.\nAppuyer sur E pour l'utiliser.";
             break;
         }
     }
@@ -36,8 +36,7 @@ int recup_potion_vie(rpg_t *rpg, int m)
 {
     sfSprite_setPosition(rpg->player->interact, (sfVector2f){340, 1300});
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->player->interact, NULL);
-    if (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue) {
-        while (sfKeyboard_isKeyPressed(sfKeyE) == sfTrue);
+    if (key_just_pressed(sfKeyE) && has_free_slot(rpg)) {
         m = 2;
         rpg->player->potion_have = 1;
         add_potion_inv(rpg);
@@ -53,9 +52,16 @@ void spite_six(rpg_t *rpg)
     sfRenderWindow_drawSprite(rpg->windo->window, rpg->player->coffre, NULL);
 }
 
+static int g_state = 0;
+
+void reset_six_chest(void)
+{
+    g_state = 0;
+}
+
 void six_chest(rpg_t *rpg)
 {
-    static int m = 0;
+    int m = g_state;
     if (rpg->player->player_pos.x >= 140 && rpg->player->player_pos.x <= 380
     && rpg->player->player_pos.y >= 1220 && rpg->player->player_pos.y <= 1380
     && m == 0)
@@ -74,5 +80,6 @@ void six_chest(rpg_t *rpg)
         rpg->player->rect_chest.left = 460;
     else
         rpg->player->rect_chest.left = 250;
+    g_state = m;
     spite_six(rpg);
 }

@@ -30,8 +30,7 @@ void chrono_player_attack_no_w(rpg_t *rpg, sfClock *clock, float secc, int max)
 
 void attack_id_no_w(rpg_t *rpg)
 {
-    if (rpg->player->attack_id == 1) {
-        sfSleep((sfTime){75000});
+    if (rpg->player->attack_id == 1 && attack_step_ready(0)) {
         chrono_player_attack_no_w(rpg, rpg->windo->clock, 10000.0, 370);
         attack_val(attack_val(0) + 1);
     }

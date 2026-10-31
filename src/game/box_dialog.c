@@ -31,9 +31,9 @@ void message_two(rpg_t *rpg, int len)
         display_text(rpg, len);
     }
     if (rpg->dialog_pass == 3) {
-        rpg->message = "Pour finir, tu peux attaquer les monstres avec\
-        ESPACE\nSi tu veux voir un peu plus autour de toi\n\
-tu dezoomer avec A et zoomer avec Z";
+        rpg->message = "Pour finir, attaque les monstres avec ESPACE.\n"
+        "Si tu veux voir un peu plus autour de toi\n"
+        "tu peux dezoomer avec A et zoomer avec Z.";
         len = my_strlen(rpg->message);
         display_text(rpg, len);
     }
@@ -79,8 +79,7 @@ void box_dialog(rpg_t *rpg, int len)
 
     sfSprite_setPosition(rpg->dialog, (sfVector2f){1900, edd.y - 400});
     sfText_setPosition(rpg->text_dialog, (sfVector2f){2200, edd.y + 250});
-    if (sfKeyboard_isKeyPressed(sfKeyP) == sfTrue && rpg->dialog_pass < 4) {
-        while (sfKeyboard_isKeyPressed(sfKeyP) == sfTrue);
+    if (key_just_pressed(sfKeyP) && rpg->dialog_pass < 4) {
         if (rpg->defil == len) {
             rpg->dialog_pass += 1;
             rpg->defil = 0;

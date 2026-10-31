@@ -25,55 +25,25 @@ int y_static(int nouveauNombre)
     return nombre;
 }
 
-void smooth_move(rpg_t *rpg, int x, int y, int nb)
+float overshoot(float pos, float min, float max)
 {
-    int i = 0;
-
-    for (; i < 50; i++) {
-        sfView_move(rpg->windo->view, (sfVector2f){x, y});
-        sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
-    }
-}
-
-void deplace_map_two(rpg_t *rpg, sfVector2f edd)
-{
-    if (rpg->player->player_pos.y < (edd.y - rpg->windo->video_mode.height / 2)
-    + 200) {
-        rpg->player->player_pos.y = (edd.y - rpg->windo->video_mode.height / 2)
-        + 200;
-        y_static(y_static(0) + rpg->player->vitesse);
-        smooth_move(rpg, 0, -1, 7);
-        sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
-    }
-    if (rpg->player->player_pos.y > (edd.y + rpg->windo->video_mode.height / 2)
-    - 450) {
-        rpg->player->player_pos.y = (edd.y + rpg->windo->video_mode.height / 2)
-        - 450;
-        y_static(y_static(0) - rpg->player->vitesse);
-        smooth_move(rpg, 0, 1, 7);
-        sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
-    }
+    if (pos < min)
+        return pos - min;
+    if (pos > max)
+        return pos - max;
+    return 0;
 }
 
 void deplace_map(rpg_t *rpg)
 {
     sfVector2f edd = sfView_getCenter(rpg->windo->view);
+    float dx = overshoot(rpg->player->player_pos.x + 80, edd.x - 120,
+    edd.x + 120);
+    float dy = overshoot(rpg->player->player_pos.y + 100, edd.y - 120,
+    edd.y + 120);
 
-    if (rpg->player->player_pos.x < (edd.x - rpg->windo->video_mode.width / 2)
-    + 200) {
-        rpg->player->player_pos.x = (edd.x - rpg->windo->video_mode.width / 2)
-        + 200;
-        x_static(x_static(0) + rpg->player->vitesse);
-        smooth_move(rpg, -1, 0, 7);
-        sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
-    }
-    if (rpg->player->player_pos.x > (edd.x + rpg->windo->video_mode.width / 2)
-    - 350) {
-        rpg->player->player_pos.x = (edd.x + rpg->windo->video_mode.width / 2)
-        - 350;
-        x_static(x_static(0) - rpg->player->vitesse);
-        smooth_move(rpg, 1, 0, 7);
-        sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
-    }
-    deplace_map_two(rpg, edd);
+    if (dx == 0 && dy == 0)
+        return;
+    sfView_move(rpg->windo->view, (sfVector2f){dx, dy});
+    sfRenderWindow_setView(rpg->windo->window, rpg->windo->view);
 }
