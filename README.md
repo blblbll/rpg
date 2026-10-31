@@ -1,3 +1,5 @@
+![accueil](./rpg.gif)
+
 # my_rpg
 
 Un petit RPG 2D en C avec la CSFML. Explore la carte, ouvre les coffres, bats les monstres, récupère la clé et affronte le boss pour finir le jeu.
